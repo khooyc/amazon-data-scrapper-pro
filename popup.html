@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Amazon Data Scrapper Pro by Khoo YC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#111214;
+  --surface:#1c1e22;
+  --surface2:#242629;
+  --border:#2e3035;
+  --border2:#3a3d44;
+  --accent:#f5a623;
+  --accent2:#e8522a;
+  --text:#eceef2;
+  --muted:#7a7f8a;
+  --muted2:#5a5f6a;
+  --green:#3ecf8e;
+  --red:#e85c4a;
+  --blue:#5b8def;
+  --radius:7px;
+}
+
+body{
+  width:480px;
+  min-height:300px;
+  max-height:600px;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+}
+
+body.theme-light{
+  --bg:#fff8f2;
+  --surface:#ffffff;
+  --surface2:#fff3e4;
+  --border:#e7d6c2;
+  --border2:#dfc8ad;
+  --text:#2a1b0c;
+  --muted:#7f6b55;
+  --muted2:#a2886d;
+  --green:#1f9d63;
+  --red:#c84f3f;
+  --blue:#2f6fd6;
+}
+
+/* HEADER */
+header{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo{
+  width:26px;height:26px;
+  background:#1a1a1a url('icon.png') center/cover no-repeat;
+  border-radius:5px;
+  border:1px solid var(--border2);
+  flex-shrink:0;
+}
+body.theme-light .logo{background-color:#fff3e4;border-color:#cda882}
+header h1{font-size:11px;font-weight:600;letter-spacing:.02em;line-height:1.2}
+header .version{font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:1px}
+.header-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+.window-controls{display:flex;gap:4px;align-items:center}
+.window-btn{
+  width:20px;height:20px;border-radius:4px;
+  border:1px solid var(--border2);background:var(--surface2);
+  color:var(--muted);font-size:12px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;
+}
+.window-btn:hover{color:var(--text);border-color:var(--border)}
+.window-btn.close:hover{color:#fff;background:rgba(232,92,74,.25);border-color:rgba(232,92,74,.4)}
+body.theme-light .window-btn{
+  background:#fff6ea;
+  color:#6f5840;
+}
+body.theme-light .window-btn:hover{
+  color:#2a1b0c;
+  border-color:#cda882;
+}
+body.theme-light .window-btn.close:hover{
+  color:#fff;
+  background:rgba(200,79,63,.22);
+  border-color:rgba(200,79,63,.45);
+}
+.page-badge{
+  font-size:9px;font-family:'IBM Plex Mono',monospace;font-weight:500;
+  padding:3px 7px;border-radius:3px;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--muted);
+  letter-spacing:.04em;text-transform:uppercase;
+}
+.page-badge.search{color:var(--blue);border-color:rgba(91,141,239,.3);background:rgba(91,141,239,.08)}
+.page-badge.product{color:var(--green);border-color:rgba(62,207,142,.3);background:rgba(62,207,142,.08)}
+
+body.minimized{
+  min-height:52px;
+  max-height:52px;
+  width:340px;
+}
+body.minimized .state{display:none !important}
+
+/* SCROLL AREA */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.scroll::-webkit-scrollbar{width:4px}
+.scroll::-webkit-scrollbar-track{background:transparent}
+.scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* SECTIONS */
+.section{padding:12px 14px;border-bottom:1px solid var(--border)}
+.section-title{
+  font-size:9px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);font-weight:600;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* FIELD SELECTOR */
+.fields-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:5px;
+}
+.field-item{
+  display:flex;align-items:center;gap:7px;
+  padding:6px 8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;transition:border-color .15s,background .15s;
+  user-select:none;
+}
+.field-item:hover{border-color:var(--border2);background:var(--surface2)}
+.field-item.checked{border-color:rgba(245,166,35,.35);background:rgba(245,166,35,.06)}
+.field-item input{display:none}
+.checkmark{
+  width:13px;height:13px;flex-shrink:0;
+  border:1.5px solid var(--border2);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.field-item.checked .checkmark{
+  background:var(--accent);border-color:var(--accent);
+}
+.checkmark::after{
+  content:'';width:4px;height:7px;
+  border:1.5px solid #000;border-top:none;border-left:none;
+  transform:rotate(45deg) translateY(-1px);
+  opacity:0;transition:opacity .1s;
+}
+.field-item.checked .checkmark::after{opacity:1}
+.field-label{font-size:11px;color:var(--text)}
+.field-item.checked .field-label{color:var(--accent)}
+.default-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;margin-left:auto;
+}
+
+/* ADDITIONAL INFO DROPDOWN */
+.additional-toggle{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;color:var(--muted);font-size:11px;
+  transition:color .15s;margin-top:5px;
+  user-select:none;
+}
+.additional-toggle:hover{color:var(--text)}
+.toggle-arrow{
+  margin-left:auto;font-size:9px;
+  transition:transform .2s;
+}
+.toggle-arrow.open{transform:rotate(180deg)}
+.additional-fields{
+  display:none;
+  margin-top:5px;
+  padding:8px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+.additional-fields.open{display:block}
+.additional-fields .fields-grid{gap:4px}
+.additional-controls{
+  display:flex;gap:8px;align-items:center;margin-bottom:8px;
+}
+.additional-controls .link-btn{font-size:9px}
+
+/* ASIN LIST */
+.asin-controls{
+  display:flex;gap:6px;align-items:center;margin-bottom:8px;
+}
+.link-btn{
+  font-size:10px;color:var(--accent);cursor:pointer;
+  text-decoration:underline;text-underline-offset:2px;
+  background:none;border:none;font-family:inherit;padding:0;
+}
+.link-btn:hover{color:var(--text)}
+.asin-count{font-size:10px;color:var(--muted);margin-left:auto;font-family:'IBM Plex Mono',monospace}
+
+.asin-list{display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto}
+.asin-list::-webkit-scrollbar{width:3px}
+.asin-list::-webkit-scrollbar-thumb{background:var(--border2)}
+
+.asin-row{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;transition:border-color .15s;
+}
+.asin-row:hover{border-color:var(--border2)}
+.asin-row.selected{border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.04)}
+.asin-row .chk{
+  width:13px;height:13px;flex-shrink:0;
+  border:1.5px solid var(--border2);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.asin-row.selected .chk{background:var(--accent);border-color:var(--accent)}
+.asin-row.selected .chk::after{
+  content:'';width:4px;height:7px;
+  border:1.5px solid #000;border-top:none;border-left:none;
+  transform:rotate(45deg) translateY(-1px);
+}
+.asin-code{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent);flex-shrink:0}
+.asin-label{font-size:11px;color:var(--text);font-weight:500;flex-shrink:0;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.asin-sub{font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.asin-sales{font-size:9px;color:var(--green);flex-shrink:0}
+.asin-price{font-size:9px;color:var(--muted);flex-shrink:0;font-family:'IBM Plex Mono',monospace}
+.asin-sponsored{font-size:8px;color:var(--muted2);border:1px solid var(--border2);border-radius:2px;padding:1px 4px;flex-shrink:0}
+.asin-badge-tag{font-size:8px;color:var(--accent);border:1px solid rgba(245,166,35,.3);border-radius:2px;padding:1px 4px;flex-shrink:0}
+
+/* FOOTER / ACTIONS */
+footer{
+  padding:10px 14px;
+  background:var(--surface);border-top:1px solid var(--border);
+  flex-shrink:0;
+  display:flex;flex-direction:column;gap:6px;
+}
+.action-row{display:flex;gap:6px}
+.btn{
+  flex:1;padding:8px 12px;
+  border:none;border-radius:var(--radius);
+  font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:600;
+  cursor:pointer;transition:opacity .15s,transform .1s;
+  letter-spacing:.01em;
+}
+.btn:hover{opacity:.88;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--border);opacity:1}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+body.theme-light .btn-primary{color:#2a1b0c}
+
+/* PROGRESS */
+.progress-wrap{display:none}
+.progress-wrap.active{display:block}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.progress-label{font-size:10px;color:var(--muted)}
+.progress-count{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--accent)}
+.progress-bar-bg{
+  height:4px;background:var(--border);border-radius:2px;overflow:hidden;
+}
+.progress-bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px;transition:width .3s ease;width:0%;
+}
+
+/* STATES */
+.state{display:none}
+.state.active{display:flex;flex-direction:column;flex:1}
+
+/* NOT AMAZON */
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:32px 20px;text-align:center;
+}
+.empty-state .icon{font-size:32px}
+.empty-state p{font-size:12px;color:var(--muted);line-height:1.7}
+.empty-state strong{color:var(--text)}
+
+/* RESULTS TABLE */
+.results-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;border-bottom:1px solid var(--border);
+  background:var(--surface);flex-shrink:0;
+}
+.results-title{font-size:11px;font-weight:600;color:var(--text)}
+.results-meta{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+
+.results-table-wrap{flex:1;overflow:auto}
+.results-table-wrap::-webkit-scrollbar{width:4px;height:4px}
+.results-table-wrap::-webkit-scrollbar-thumb{background:var(--border2)}
+
+table{width:100%;border-collapse:collapse;font-size:10px}
+thead{position:sticky;top:0;z-index:1}
+thead th{
+  background:var(--surface);padding:6px 8px;
+  text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;
+  font-weight:600;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:var(--surface)}
+tbody td{
+  padding:6px 8px;color:var(--text);
+  max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+}
+tbody td.text{font-family:'IBM Plex Sans',sans-serif}
+tbody td.asin{color:var(--accent)}
+tbody td.sales{color:var(--green)}
+tbody td.error{color:var(--red);font-style:italic}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:10px;left:50%;
+  transform:translateX(-50%) translateY(30px);
+  background:var(--green);color:#000;
+  font-size:10px;font-weight:600;padding:5px 14px;border-radius:20px;
+  transition:transform .2s,opacity .2s;opacity:0;pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" aria-hidden="true"></div>
+  <div>
+    <h1>Amazon Data Scrapper Pro</h1>
+    <div class="version">v2.1 — by Khoo YC</div>
+  </div>
+  <div class="header-right">
+    <div class="page-badge" id="page-badge">—</div>
+    <div class="window-controls">
+      <button class="window-btn" id="btn-theme" title="Switch to light theme">☀</button>
+      <button class="window-btn" id="btn-minimize" title="Minimize">—</button>
+      <button class="window-btn close" id="btn-close" title="Close">✕</button>
+    </div>
+  </div>
+</header>
+
+<!-- STATE: Not Amazon -->
+<div class="state active" id="state-not-amazon">
+  <div class="scroll">
+    <div class="empty-state">
+      <div class="icon">🛒</div>
+      <p>Navigate to an <strong>Amazon product page</strong><br>or <strong>search results page</strong>,<br>then click the extension.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATE: Loading initial page scan -->
+<div class="state" id="state-scanning">
+  <div class="scroll">
+    <div class="empty-state">
+      <div class="icon">🔍</div>
+      <p>Scanning page…</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATE: Main UI (configure + run) -->
+<div class="state" id="state-configure">
+  <div class="scroll" id="configure-scroll">
+
+    <!-- FIELD SELECTOR -->
+    <div class="section">
+      <div class="section-title">Fields to Extract</div>
+      <div class="fields-grid" id="default-fields">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Additional Info Dropdown -->
+      <div class="additional-toggle" id="additional-toggle">
+        <span>⊕ Additional Info</span>
+        <span class="toggle-arrow" id="toggle-arrow">▼</span>
+      </div>
+      <div class="additional-fields" id="additional-fields">
+        <div class="additional-controls">
+          <button class="link-btn" id="btn-additional-select-all">Select All</button>
+          <button class="link-btn" id="btn-additional-deselect-all">Deselect All</button>
+        </div>
+        <div class="fields-grid" id="additional-fields-grid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ASIN LIST -->
+    <div class="section">
+      <div class="section-title" id="asin-section-title">Products Found</div>
+
+      <div class="asin-controls">
+        <button class="link-btn" id="btn-select-all">Select All</button>
+        <button class="link-btn" id="btn-deselect-all">Deselect All</button>
+        <button class="link-btn" id="btn-sales-only">Monthly Sales Only</button>
+        <span class="asin-count" id="asin-count">0/0 selected</span>
+      </div>
+      <div class="asin-list" id="asin-list">
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="progress-label">Scraping products…</span>
+        <span class="progress-count" id="progress-count">0 / 0</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" id="btn-run">⚡ Extract Data</button>
+      <button class="btn btn-ghost" id="btn-cancel" style="display:none">✕ Cancel</button>
+      <button class="btn btn-ghost" id="btn-rescan">↺ Rescan</button>
+    </div>
+  </footer>
+</div>
+
+<!-- STATE: Results -->
+<div class="state" id="state-results">
+  <div class="results-header">
+    <span class="results-title">Extraction Complete</span>
+    <span class="results-meta" id="results-meta"></span>
+  </div>
+  <div class="results-table-wrap">
+    <table>
+      <thead id="results-thead"></thead>
+      <tbody id="results-tbody"></tbody>
+    </table>
+  </div>
+  <footer>
+    <div class="action-row">
+      <button class="btn btn-primary" id="btn-download-excel">📊 Download Excel</button>
+      <button class="btn btn-ghost" id="btn-download-csv">📄 Download CSV</button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-ghost" id="btn-copy-csv">📋 Copy CSV</button>
+      <button class="btn btn-ghost" id="btn-back">← Back</button>
+    </div>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>

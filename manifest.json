@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Data Scrapper Pro by Khoo YC",
+  "version": "2.1",
+  "description": "Amazon Data Scrapper Pro by Khoo YC. Extract product data from Amazon pages with visual selection and Excel/CSV export.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://www.amazon.co.uk/*",
+    "https://www.amazon.com/*",
+    "https://www.amazon.de/*",
+    "https://www.amazon.fr/*",
+    "https://www.amazon.es/*",
+    "https://www.amazon.it/*",
+    "https://www.amazon.ca/*",
+    "https://www.amazon.com.au/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
