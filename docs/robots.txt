@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://khooyc.github.io/amazon-data-scrapper-pro/sitemap.xml

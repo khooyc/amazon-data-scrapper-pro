@@ -2,6 +2,8 @@
 
 A free Chrome/Edge/Brave extension that extracts product data straight from Amazon search and product pages — price, ASIN, brand, ratings, reviews, BSR, variants, dimensions and more — with one-click export to Excel or CSV. Built and maintained by [Spectra](https://www.spectramsia.com).
 
+- **Website:** [khooyc.github.io/amazon-data-scrapper-pro](https://khooyc.github.io/amazon-data-scrapper-pro/)
+- **Download:** [latest source ZIP](https://github.com/khooyc/amazon-data-scrapper-pro/archive/refs/heads/master.zip)
 - **Install:** see [INSTALL.md](INSTALL.md)
 - **Privacy policy:** [amazon-data-scrapper-pro-policy](https://github.com/khooyc/amazon-data-scrapper-pro-policy)
 - **License:** MIT — see [LICENSE](LICENSE)
