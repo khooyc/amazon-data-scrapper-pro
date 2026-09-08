@@ -32,6 +32,7 @@
 
 **Comparison History**
 
+- Iteration 2 — P2 hero artwork crop: the forced 3:2 presentation ratio trimmed the generated image because its natural ratio is 1568:1003. Fix: removed the forced ratio and switched the image to natural height with `object-fit: contain`. Post-fix evidence: browser measurements report matching natural and rendered ratios of 1.563, showing the complete artwork at 594 × 380 on mobile.
 - Iteration 1 — P2 mobile privacy header crowding: the Back to website CTA consumed too much width and forced the brand onto three lines. Fix: shortened the label to Website and added a mobile width override. Post-fix evidence: the brand remains on one line and the CTA fits alongside it.
 - Iteration 1 — P2 hero vertical offset on desktop: center alignment placed the headline too low relative to the hero image. Fix: changed the grid to top alignment with a controlled 54px desktop copy offset and removed that offset below 1000px. Post-fix evidence: the desktop headline and visual now begin as one balanced composition; mobile begins immediately below the header.
 - Iteration 1 — P2 empty dialog image source: the closed lightbox contained an empty image source and appeared in the broken-image check. Fix: set the generated hero as the initial dialog source. Post-fix evidence: browser evaluation reports zero broken images.
