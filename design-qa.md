@@ -14,7 +14,7 @@
 
 - No actionable P0, P1, or P2 findings remain.
 - Typography: the implementation preserves the reference hierarchy, optical weight, compact navigation, large wrapped display heading, muted supporting copy, and full-width mobile CTA. IBM Plex Sans and IBM Plex Mono intentionally extend the extension's own interface typography into the marketing site.
-- Spacing and layout: the reference's generous whitespace and stacked mobile hero are preserved. Desktop uses the same split hero and centered content width as the reference; mobile collapses cleanly without horizontal overflow.
+- Spacing and layout: the reference's generous whitespace and stacked mobile hero are preserved. Desktop now places the article in a dedicated content column beside persistent section navigation; compact viewports collapse cleanly to an off-canvas contents drawer without horizontal overflow.
 - Colors and tokens: the shared white/ink/amber structure is retained. The darker charcoal surfaces, restrained green/blue accents, and amber labels intentionally reflect the extension UI.
 - Image quality: the generated hero is sharp, correctly cropped inside the 3:2 frame, unbranded, and visually consistent with the extension's dark research-console style. The supplied project icon is used directly for brand marks.
 - Copy and content: claims match version 2.1, the manifest permissions, supported marketplaces, available fields, developer-mode distribution, and Excel/CSV behavior documented in the repository.
@@ -32,6 +32,7 @@
 
 **Comparison History**
 
+- Iteration 3 — user-requested navigation restructure: the top navigation competed with the parent website's own navigation. Fix: replaced it with a sticky, article-style left sidebar containing the page outline and actions; compact widths use a dismissible Contents drawer. Post-fix evidence: desktop browser capture shows the 248px sidebar beside the full hero, the sidebar remains at top 0 after scrolling, and the 760px test confirms the drawer opens, closes after selection, updates the URL hash, and releases the body scroll lock.
 - Iteration 2 — P2 hero artwork crop: the forced 3:2 presentation ratio trimmed the generated image because its natural ratio is 1568:1003. Fix: removed the forced ratio and switched the image to natural height with `object-fit: contain`. Post-fix evidence: browser measurements report matching natural and rendered ratios of 1.563, showing the complete artwork at 594 × 380 on mobile.
 - Iteration 1 — P2 mobile privacy header crowding: the Back to website CTA consumed too much width and forced the brand onto three lines. Fix: shortened the label to Website and added a mobile width override. Post-fix evidence: the brand remains on one line and the CTA fits alongside it.
 - Iteration 1 — P2 hero vertical offset on desktop: center alignment placed the headline too low relative to the hero image. Fix: changed the grid to top alignment with a controlled 54px desktop copy offset and removed that offset below 1000px. Post-fix evidence: the desktop headline and visual now begin as one balanced composition; mobile begins immediately below the header.
@@ -40,6 +41,7 @@
 **Primary Interactions Tested**
 
 - Mobile navigation opens and closes, exposes all navigation links, and resets after selection.
+- Desktop article navigation remains sticky while the content scrolls.
 - Hero image opens in a modal preview and the close control is present.
 - FAQ disclosure opens successfully.
 - Privacy page loads and returns to the website.

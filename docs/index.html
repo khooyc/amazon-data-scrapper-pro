@@ -21,24 +21,34 @@
   <body id="top">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="AMZ Scrapper Pro home">
-        <img src="assets/icon.png" alt="" width="38" height="38" />
-        <span>AMZ Scrapper Pro</span>
-      </a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Open menu</span><span></span><span></span><span></span>
-      </button>
-      <nav id="site-nav" aria-label="Main navigation">
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#privacy">Privacy</a>
-        <a href="#faq">FAQ</a>
-        <a class="button button-small" href="https://github.com/khooyc/amazon-data-scrapper-pro/archive/refs/heads/master.zip">Install free</a>
-      </nav>
-    </header>
+    <div class="page-shell">
+      <aside class="site-sidebar" id="site-nav" aria-label="Article navigation">
+        <a class="brand" href="#top" aria-label="AMZ Scrapper Pro home">
+          <img src="assets/icon.png" alt="" width="40" height="40" />
+          <span>AMZ Scrapper Pro</span>
+        </a>
+        <p class="sidebar-label">On this page</p>
+        <nav class="sidebar-nav">
+          <a href="#top">Overview</a>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#install">Installation</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="sidebar-actions">
+          <a class="button button-small" href="https://github.com/khooyc/amazon-data-scrapper-pro/archive/refs/heads/master.zip">Download extension</a>
+          <a class="sidebar-source" href="https://github.com/khooyc/amazon-data-scrapper-pro">View source on GitHub →</a>
+        </div>
+      </aside>
+      <button class="sidebar-backdrop" type="button" aria-label="Close contents menu"></button>
 
-    <main id="main">
+      <div class="page-content">
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span>Contents</span><span class="menu-icon" aria-hidden="true">Menu</span>
+        </button>
+
+        <main id="main">
       <section class="hero">
         <div class="hero-copy">
           <p class="eyebrow">FREE · OPEN SOURCE · VERSION 2.1</p>
@@ -198,18 +208,20 @@
           <a class="button button-dark-outline" href="https://github.com/khooyc/amazon-data-scrapper-pro">View the source</a>
         </div>
       </section>
-    </main>
+        </main>
 
-    <footer class="site-footer">
-      <a class="brand" href="#top"><img src="assets/icon.png" alt="" width="34" height="34" /><span>AMZ Scrapper Pro</span></a>
-      <nav aria-label="Footer navigation"><a href="privacy.html">Privacy</a><a href="https://github.com/khooyc/amazon-data-scrapper-pro">GitHub</a><a href="https://github.com/khooyc/amazon-data-scrapper-pro/issues">Support</a><a href="https://www.spectramsia.com">Spectra</a></nav>
-      <p>Amazon and its related marks are trademarks of Amazon.com, Inc. or its affiliates. Independent tool; not affiliated with, sponsored by, or endorsed by Amazon.</p>
-    </footer>
+        <footer class="site-footer">
+          <a class="brand" href="#top"><img src="assets/icon.png" alt="" width="34" height="34" /><span>AMZ Scrapper Pro</span></a>
+          <nav aria-label="Footer navigation"><a href="privacy.html">Privacy</a><a href="https://github.com/khooyc/amazon-data-scrapper-pro">GitHub</a><a href="https://github.com/khooyc/amazon-data-scrapper-pro/issues">Support</a><a href="https://www.spectramsia.com">Spectra</a></nav>
+          <p>Amazon and its related marks are trademarks of Amazon.com, Inc. or its affiliates. Independent tool; not affiliated with, sponsored by, or endorsed by Amazon.</p>
+        </footer>
 
-    <dialog class="lightbox" aria-label="Image preview">
-      <button class="lightbox-close" type="button" aria-label="Close preview">×</button>
-      <img src="assets/hero-product-research.png" alt="Enlarged product research workflow" />
-    </dialog>
+        <dialog class="lightbox" aria-label="Image preview">
+          <button class="lightbox-close" type="button" aria-label="Close preview">×</button>
+          <img src="assets/hero-product-research.png" alt="Enlarged product research workflow" />
+        </dialog>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

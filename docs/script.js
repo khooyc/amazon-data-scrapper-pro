@@ -1,15 +1,26 @@
 const menuButton = document.querySelector('.menu-button');
 const navigation = document.querySelector('#site-nav');
+const backdrop = document.querySelector('.sidebar-backdrop');
 
 if (menuButton && navigation) {
-  menuButton.addEventListener('click', () => {
-    const open = navigation.classList.toggle('open');
+  const setMenuOpen = (open) => {
+    navigation.classList.toggle('open', open);
+    backdrop?.classList.toggle('open', open);
+    document.body.classList.toggle('nav-open', open);
     menuButton.setAttribute('aria-expanded', String(open));
+  };
+
+  menuButton.addEventListener('click', () => {
+    setMenuOpen(!navigation.classList.contains('open'));
   });
 
-  navigation.addEventListener('click', () => {
-    navigation.classList.remove('open');
-    menuButton.setAttribute('aria-expanded', 'false');
+  navigation.addEventListener('click', (event) => {
+    if (event.target.closest('a')) setMenuOpen(false);
+  });
+
+  backdrop?.addEventListener('click', () => setMenuOpen(false));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
   });
 }
 
